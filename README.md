@@ -1,5 +1,4 @@
 <div align="center">
-  <!-- شعار المشروع في المنتصف -->
   <img src="شعار_المشروع.png" alt="شعار اللغة البرمجية العربية" width="200">
 
 # اللغة البرمجية العربية (Arabic Programming Language) 🚀
