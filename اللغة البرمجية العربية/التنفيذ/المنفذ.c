@@ -4,7 +4,6 @@
 
 #include "المنفذ.h"
 #include "محرك_الدالة.h"
-#include "محرك_الشرط.h"
 #include "محرك_الاشارات.h"
 #include "المحرك_الرياضي.h"
 #include "مفسر_العمليات.h"
@@ -104,20 +103,26 @@ static int execute_block(const char *body)
             function_store(cmd.name, body2);
             continue;
         }
-
         /* ========================= */
-        /* تنفيذ اذا + والا         */
+        /* تنفيذ اذا + والا اذا + والا */
         /* ========================= */
 
         if (cmd.type == CMD_IF_DEF)
         {
-            char if_body[4096] = "";
-            char else_body[4096] = "";
+            char bodies[10][4096];
+            char conditions[10][256];
+
+            int count = 0;
+
+            // =========================
+            // أول if
+            // =========================
+
+            strcpy(conditions[count], cmd.argument);
+            bodies[count][0] = '\0';
 
             int brace = 1;
             i++;
-
-            /* قراءة جسم if */
 
             while (i < total)
             {
@@ -127,27 +132,28 @@ static int execute_block(const char *body)
                 if (brace == 0)
                     break;
 
-                strcat(if_body, lines[i]);
-                strcat(if_body, "\n");
+                strcat(bodies[count], lines[i]);
+                strcat(bodies[count], "\n");
                 i++;
             }
 
-            /* ========================= */
-            /* فحص وجود والا             */
-            /* ========================= */
+            count++;
 
-            int has_else = 0;
+            // =========================
+            // قراءة else if و else
+            // =========================
 
-            if (i + 1 < total)
+            while (i + 1 < total)
             {
-                char *nextline = lines[i + 1];
+                Command next = parse_line(lines[i + 1]);
 
-                if (strstr(nextline, "والا") != NULL)
+                // ----------- والا اذا -----------
+                if (next.type == CMD_ELSE_IF)
                 {
-                    has_else = 1;
-
-                    /* تخطي سطر والا */
                     i += 2;
+
+                    strcpy(conditions[count], next.argument);
+                    bodies[count][0] = '\0';
 
                     brace = 1;
 
@@ -159,31 +165,62 @@ static int execute_block(const char *body)
                         if (brace == 0)
                             break;
 
-                        strcat(else_body, lines[i]);
-                        strcat(else_body, "\n");
+                        strcat(bodies[count], lines[i]);
+                        strcat(bodies[count], "\n");
                         i++;
                     }
+
+                    count++;
+                }
+                // ----------- والا -----------
+                else if (next.type == CMD_ELSE)
+                {
+                    i += 2;
+
+                    strcpy(conditions[count], "1"); // شرط دائم
+                    bodies[count][0] = '\0';
+
+                    brace = 1;
+
+                    while (i < total)
+                    {
+                        if (strchr(lines[i], '{')) brace++;
+                        if (strchr(lines[i], '}')) brace--;
+
+                        if (brace == 0)
+                            break;
+
+                        strcat(bodies[count], lines[i]);
+                        strcat(bodies[count], "\n");
+                        i++;
+                    }
+
+                    count++;
+                    break;
+                }
+                else
+                {
+                    break;
                 }
             }
 
-            /* ========================= */
-            /* تقييم الشرط               */
-            /* ========================= */
+            // =========================
+            // تنفيذ أول شرط صحيح
+            // =========================
 
-            double result = 0;
+            for (int j = 0; j < count; j++)
+            {
+                double result = 0;
 
-            if (math_eval(cmd.argument, &result) == 0 && result != 0)
-            {
-                execute_block(if_body);
-            }
-            else if (has_else)
-            {
-                execute_block(else_body);
+                if (math_eval(conditions[j], &result) == 0 && result != 0)
+                {
+                    execute_block(bodies[j]);
+                    break;
+                }
             }
 
             continue;
         }
-
         /* ========================= */
         /* تنفيذ الأمر              */
         /* ========================= */
@@ -219,28 +256,6 @@ int execute_command(Command cmd)
         return execute_block(body);
     }
 
-    /* ========================= */
-    /* استدعاء شرط              */
-    /* ========================= */
-
-    if (cmd.type == CMD_IF_CALL)
-    {
-        const char *body = if_get(cmd.name);
-        const char *cond = if_get_condition(cmd.name);
-
-        if (!body || !cond)
-        {
-            printf("خطأ: الشرط '%s' غير موجود\n", cmd.name);
-            return 0;
-        }
-
-        double result = 0;
-
-        if (math_eval(cond, &result) == 0 && result != 0)
-            return execute_block(body);
-
-        return 0;
-    }
 
     /* ========================= */
     /* تنفيذ أمر نظام           */

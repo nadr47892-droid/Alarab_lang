@@ -299,13 +299,93 @@ static int parse_function(double *v) {
 
 
 
-
 /* =========================================================
    الواجهة العامة
 ========================================================= */
+
+/* التحقق أن "و" منطقية وليست داخل كلمة */
+static int is_logic_and(const char *s, int i)
+{
+    char before = (i > 0) ? s[i - 1] : ' ';
+    char after  = s[i + 2];
+
+    if (isalpha(before) || (unsigned char)before >= 0x80) return 0;
+    if (isalpha(after)  || (unsigned char)after  >= 0x80) return 0;
+
+    return 1;
+}
+
+/* التحقق أن "او" منطقية */
+static int is_logic_or(const char *s, int i)
+{
+    char before = (i > 0) ? s[i - 1] : ' ';
+    char after  = s[i + 4];
+
+    if (isalpha(before) || (unsigned char)before >= 0x80) return 0;
+    if (isalpha(after)  || (unsigned char)after  >= 0x80) return 0;
+
+    return 1;
+}
+
 int math_eval(const char *expression_text,
               double *result)
 {
+    /* =========================
+       دعم AND (و) بدون مسافات
+    ========================= */
+    for (int i = 0; expression_text[i] != '\0'; i++)
+    {
+        if (strncmp(&expression_text[i], "و", 2) == 0 &&
+            is_logic_and(expression_text, i))
+        {
+            char left[256];
+            char right[256];
+
+            strncpy(left, expression_text, i);
+            left[i] = '\0';
+
+            strcpy(right, &expression_text[i + 2]);
+
+            double l = 0, r = 0;
+
+            if (math_eval(left, &l) != 0) return -1;
+            if (math_eval(right, &r) != 0) return -1;
+
+            *result = (l != 0 && r != 0);
+            return 0;
+        }
+    }
+
+    /* =========================
+       دعم OR (او) بدون مسافات
+    ========================= */
+    for (int i = 0; expression_text[i] != '\0'; i++)
+    {
+        if (strncmp(&expression_text[i], "او", 4) == 0 &&
+            is_logic_or(expression_text, i))
+        {
+            char left[256];
+            char right[256];
+
+            strncpy(left, expression_text, i);
+            left[i] = '\0';
+
+            strcpy(right, &expression_text[i + 4]);
+
+            double l = 0, r = 0;
+
+            if (math_eval(left, &l) != 0) return -1;
+            if (math_eval(right, &r) != 0) return -1;
+
+            *result = (l != 0 || r != 0);
+            return 0;
+        }
+    }
+
+    /* =========================
+       الكود القديم
+    ========================= */
+
     p = expression_text;
 
     double left;
@@ -314,8 +394,6 @@ int math_eval(const char *expression_text,
         return -1;
 
     skip_spaces();
-
-    /* دعم المقارنات */
 
     double cmp;
     int r = parse_comparison(left, &cmp);

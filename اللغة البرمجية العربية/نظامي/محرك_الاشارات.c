@@ -34,15 +34,89 @@ void rt_clear(void)
 int runtime_execute(Command cmd)
 {
     switch (cmd.type)
-    {
-
-        // ===============================
+    {  
+      // ===============================
         // طباعة
         // ===============================
         case CMD_PRINT:
+        {
             for (int i = 0; i < cmd.repeat; i++)
-                rt_print(cmd.argument);
+            {
+                char buffer[256];
+                strncpy(buffer, cmd.argument, sizeof(buffer)-1);
+                buffer[sizeof(buffer)-1] = '\0';
+
+                char *comma = strchr(buffer, ',');
+
+                // ===============================
+                // حالة: ("نص", متغير)
+                // ===============================
+                if (comma)
+                {
+                    *comma = '\0';
+
+                    char *text = buffer;
+                    char *varname = comma + 1;
+
+                    // حذف المسافات من البداية
+                    while (*varname == ' ')
+                        varname++;
+
+                    // حذف المسافات من النهاية
+                    int len = strlen(varname);
+                    while (len > 0 && varname[len - 1] == ' ')
+                    {
+                        varname[len - 1] = '\0';
+                        len--;
+                    }
+
+                    // إزالة " من النص
+                    size_t tlen = strlen(text);
+                    if (tlen >= 2 && text[0] == '"' && text[tlen - 1] == '"')
+                    {
+                        text[tlen - 1] = '\0';
+                        memmove(text, text + 1, tlen - 1);
+                    }
+
+                    double value;
+                    int res = var_get(varname, &value);
+
+                    if (res == 1)
+                    {
+                        printf("%s %g\n", text, value);
+                    }
+                    else if (res == -1)
+                    {
+                        printf("❌ المتغير %s ليس له قيمة بعد\n", varname);
+                    }
+                    else
+                    {
+                        printf("❌ المتغير %s غير موجود\n", varname);
+                    }
+                }
+                // ===============================
+                // حالة: ("نص فقط")
+                // ===============================
+                else
+                {
+                    char text[256];
+                    strncpy(text, buffer, sizeof(text)-1);
+                    text[sizeof(text)-1] = '\0';
+
+                    size_t tlen = strlen(text);
+
+                    if (tlen >= 2 && text[0] == '"' && text[tlen - 1] == '"')
+                    {
+                        text[tlen - 1] = '\0';
+                        memmove(text, text + 1, tlen - 1);
+                    }
+
+                    printf("%s\n", text);
+                }
+            }
+
             break;
+        }
 
         // ===============================
         // تنظيف الشاشة
@@ -80,6 +154,30 @@ int runtime_execute(Command cmd)
             break;
         }
 
+        case CMD_INPUT:
+        {
+            double value;
+
+            printf("ادخل قيمة %s: ", cmd.argument);
+
+        if (scanf("%lf", &value) != 1)
+        {
+            printf("❌ إدخال غير صالح\n");
+
+            int c;
+            while ((c = getchar()) != '\n' && c != EOF);
+
+            break;
+        }
+
+            getchar(); // تنظيف السطر
+
+            var_set(cmd.argument, value);
+
+            printf("تم حفظ %s = %.2f\n", cmd.argument, value);
+
+            break;
+        }
         // ===============================
         // إسناد متغير
         // ===============================
@@ -96,7 +194,25 @@ int runtime_execute(Command cmd)
 
                 sscanf(cmd.argument, "%31s", name);
 
-                if (math_eval(eq + 1, &val) == 0)
+                char *value_str = eq + 1;
+
+                while (*value_str == ' ')
+                    value_str++;
+
+                // ===============================
+                // متغير بدون قيمة
+                // ===============================
+                if (strcmp(value_str, "؟") == 0)
+                {
+                    var_set(name, NAN);
+                    printf("تم تعريف %s كمتغير بدون قيمة\n", name);
+                    break;
+                }
+
+                // ===============================
+                // إسناد عادي
+                // ===============================
+                if (math_eval(value_str, &val) == 0)
                 {
                     var_set(name, val);
 
@@ -113,7 +229,6 @@ int runtime_execute(Command cmd)
 
             break;
         }
-
         // ===============================
         // حل معادلة
         // ===============================

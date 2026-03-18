@@ -15,9 +15,10 @@ typedef enum {
     CMD_FUNCTION_DEF,
     CMD_FUNCTION_CALL,
     CMD_IF_DEF,
-    CMD_IF_CALL,
     CMD_ELSE,
+    CMD_ELSE_IF,
     CMD_SOLVE,
+    CMD_INPUT,
 } CommandType;
 
 typedef struct {

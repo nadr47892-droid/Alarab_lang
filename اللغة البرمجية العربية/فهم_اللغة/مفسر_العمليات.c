@@ -6,7 +6,6 @@
 #include "مفسر_العمليات.h"
 #include "القاموس.h"
 #include "محرك_الدالة.h"
-#include "محرك_الشرط.h"
 
 static void trim(char *str)
 {
@@ -96,6 +95,19 @@ Command parse_line(const char *line)
             return cmd;
         }
     }
+ //else if
+    if (strncmp(clean, "والا اذا(", 8) == 0)
+    {
+        char condition[256];
+
+        if (sscanf(clean, "والا اذا(%255[^)])", condition) == 1)
+        {
+            cmd.type = CMD_ELSE_IF;
+            strcpy(cmd.argument, condition);
+            return cmd;
+        }
+    }
+
 
     /* ================================
    والا (else)
@@ -112,22 +124,10 @@ Command parse_line(const char *line)
 
     if (strncmp(clean, "اذا(", 4) == 0)
     {
-        char name[64];
         char condition[256];
 
-    /* الحالة 1 : اذا(اسم),(شرط) */
 
-        if (sscanf(clean, "اذا(%63[^)]),(%255[^)])", name, condition) == 2)
-        {
-            cmd.type = CMD_IF_DEF;
-    
-            strcpy(cmd.name, name);
-            strcpy(cmd.argument, condition);
-    
-            return cmd;
-        }
-
-    /* الحالة 2 : اذا(شرط) */
+    /* اذا(شرط)*/
 
         if (sscanf(clean, "اذا(%255[^)])", condition) == 1)
         {
@@ -155,11 +155,6 @@ Command parse_line(const char *line)
 
         snprintf(cmd.name, sizeof(cmd.name), "%.*s", name_len, clean);
 
-        if (if_get(cmd.name))
-        {
-            cmd.type = CMD_IF_CALL;
-            return cmd;
-        }
 
         if (function_get(cmd.name))
         {
@@ -214,8 +209,6 @@ Command parse_line(const char *line)
         return cmd;
     }
 
-
-
     /* ================================
        6. اطبع
     ================================= */
@@ -250,14 +243,6 @@ Command parse_line(const char *line)
 
         strncpy(text, open + 1, text_len);
         text[text_len] = '\0';
-
-        size_t real_len = strlen(text);
-
-        if (real_len >= 2 && text[0] == '"' && text[real_len - 1] == '"') {
-
-            text[real_len - 1] = '\0';
-            memmove(text, text + 1, real_len - 1);
-        }
 
         cmd.type = CMD_PRINT;
         cmd.repeat = 1;
@@ -310,6 +295,28 @@ Command parse_line(const char *line)
         return cmd;
     }
 
+
+    if (strncmp(clean, "ادخل", 4) == 0)
+    {
+
+
+        char *eq = strchr(clean, '=');
+
+        if (eq)
+        {
+            eq++; // بعد =
+
+            while (*eq == ' ')
+            eq++;
+
+            strncpy(cmd.argument, eq, sizeof(cmd.argument) - 1);
+            cmd.argument[sizeof(cmd.argument) - 1] = '\0';
+
+            cmd.type = CMD_INPUT;
+            return cmd;
+        }
+    }
+    
     /* ================================
        تعيين متغير
     ================================= */
