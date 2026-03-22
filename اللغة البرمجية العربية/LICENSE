@@ -1,40 +1,49 @@
-MIT License
+GNU GENERAL PUBLIC LICENSE
+Version 2, June 1991
 
-Copyright (c) 2024-2026 Saif Dev Al-Arab (سيف مطور العرب)
+Copyright (c) 2026 saif dev-Alarab (سيف مطور(العرب)) 1447 سنة هجرية
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to do so, subject to the following conditions:
+Everyone is permitted to copy and distribute verbatim copies of this license document, but changing it is not allowed.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
+This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License.
+You may copy and distribute verbatim copies of the Program's source code as you receive it, in any medium, provided that you conspicuously and appropriately publish on each copy an appropriate copyright notice and disclaimer of warranty.
+You may modify your copy or copies of the Program or any portion of it, thus forming a work based on the Program, and copy and distribute such modifications under the terms of Section 1 above.
+You must cause any work that you distribute or publish, that in whole or in part contains or is derived from the Program, to be licensed as a whole under the terms of this License.
+You may not impose any further restrictions on the recipients' exercise of the rights granted herein.
+NO WARRANTY
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+THIS PROGRAM IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
 
+IN NO EVENT WILL THE COPYRIGHT HOLDER BE LIABLE FOR ANY DAMAGES ARISING FROM THE USE OF THIS SOFTWARE.
 ---------------------------------------------------------
 
 # الترجمة العربية (للتوضيح فقط - غير ملزمة قانونيًا)
 
-رخصة MIT
+رخصة جنو العمومية
+الإصدار ٢، يونيو ١٩٩١
 
-حقوق الطبع والنشر (c) 2024-2026 محفوظة لـ: Saif Dev Al-Arab (سيف مطور العرب)
+حقوق النشر © ٢٠٢٦ سيف مطور (العرب) ١٤٤٧ سنة هجرية
 
-يُمنح الإذن مجانًا لأي شخص يحصل على نسخة من هذا البرنامج والملفات المرتبطة به
-(ويُشار إليها بـ "البرنامج") للتعامل مع البرنامج دون قيود، بما في ذلك على سبيل المثال لا الحصر
-حقوق الاستخدام، النسخ، التعديل، الدمج، النشر، التوزيع، الترخيص الفرعي، و/أو بيع نسخ من البرنامج،
-والسماح للأشخاص الذين يتم تزويدهم بالبرنامج بالقيام بذلك، وفقًا للشروط التالية:
+يُسمح للجميع بنسخ وتوزيع نسخ مطابقة تمامًا لوثيقة هذه الرخصة، ولكن لا يُسمح بتغييرها.
 
-يجب تضمين إشعار حقوق الطبع والنشر هذا وإشعار الإذن في جميع النسخ أو الأجزاء الجوهرية من البرنامج.
+شروط وأحكام النسخ والتوزيع والتعديل
+هذا البرنامج برنامج حر؛ يمكنك إعادة توزيعه و/أو تعديله وفقًا لشروط رخصة جنو العمومية كما نشرتها مؤسسة البرمجيات الحرة؛ الإصدار ٢ من الرخصة.
 
-يتم توفير البرنامج "كما هو" دون أي ضمان من أي نوع، صريح أو ضمني، بما في ذلك على سبيل المثال لا الحصر
-ضمانات القابلية للتسويق، أو الملاءمة لغرض معين، أو عدم التعدي على الحقوق.
-ولا يتحمل المؤلفون أو أصحاب حقوق الطبع والنشر أي مسؤولية عن أي مطالبة أو أضرار أو التزامات أخرى،
-سواء في دعوى عقدية أو تقصيرية أو غير ذلك، ناشئة عن أو مرتبطة بالبرنامج أو استخدامه أو التعامل معه.
+يجوز لك نسخ وتوزيع نسخ مطابقة تمامًا لشفرة مصدر البرنامج كما استلمتها، بأي وسيلة، شريطة أن تنشر بشكل واضح ومناسب على كل نسخة إشعارًا مناسبًا بحقوق النشر وإخلاء مسؤولية عن الضمان.
+
+
+يجوز لك نسخ وتوزيع نسخ مطابقة تمامًا لشفرة مصدر البرنامج كما هي، بأي وسيلة، شريطة أن تنشر بشكل واضح ومناسب على كل نسخة إشعارًا مناسبًا بحقوق النشر وإخلاء مسؤولية عن الضمان. يجوز لك تعديل نسختك أو نسخك من البرنامج أو أي جزء منه، لتكوين عمل قائم على البرنامج، ونسخ هذه التعديلات وتوزيعها وفقًا لأحكام البند 1 أعلاه.
+
+يجب عليك ترخيص أي عمل تقوم بتوزيعه أو نشره، والذي يحتوي كليًا أو جزئيًا على البرنامج أو مشتق منه، بموجب شروط هذا الترخيص.
+
+لا يجوز لك فرض أي قيود إضافية على ممارسة المستلمين للحقوق الممنوحة بموجب هذا الترخيص.
+
+لا ضمان
+
+يُقدَّم هذا البرنامج "كما هو" دون أي ضمان من أي نوع، سواءً كان صريحًا أو ضمنيًا، بما في ذلك، على سبيل المثال لا الحصر، الضمانات الضمنية لقابلية التسويق والملاءمة لغرض معين.
+
+
+
+
+يُقدَّم هذا البرنامج "كما هو" دون أي ضمان من أي نوع، سواءً كان صريحًا أو ضمنيًا، بما في ذلك، على سبيل المثال لا الحصر، الضمانات الضمنية لقابلية التسويق والملاءمة لغرض معين. لن يكون صاحب حقوق الطبع والنشر مسؤولاً بأي حال من الأحوال عن أي أضرار تنشأ عن استخدام هذا البرنامج.
